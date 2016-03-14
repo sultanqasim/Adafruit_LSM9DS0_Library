@@ -166,9 +166,9 @@ class Adafruit_LSM9DS0
     
     typedef struct vector_s
     {
-      float x;
-      float y;
-      float z;
+      int16_t x;
+      int16_t y;
+      int16_t z;
     } lsm9ds0Vector_t;
     
     lsm9ds0Vector_t accelData;    // Last read accelerometer data will be available here
