@@ -9,7 +9,7 @@
   please support Adafruit andopen-source hardware by purchasing products
   from Adafruit!
 
-  Written by Kevin Townsend for Adafruit Industries.  
+  Written by Kevin Townsend for Adafruit Industries.
   BSD license, all text above must be included in any redistribution
  ***************************************************************************/
 #include <Adafruit_LSM9DS0.h>
@@ -119,16 +119,16 @@ bool Adafruit_LSM9DS0::begin()
   // enable the temperature sensor (output rate same as the mag sensor)
   uint8_t tempReg = read8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG5_XM);
   write8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG5_XM, tempReg | (1<<7));
-  
+
   /*
   for (uint8_t i=0; i<0x30; i++) {
     Serial.print("$"); Serial.print(i, HEX);
-    Serial.print(" = 0x"); 
+    Serial.print(" = 0x");
     Serial.println(read8(XMTYPE, i), HEX);
   }
   */
 
-  // Set default ranges for the various sensors  
+  // Set default ranges for the various sensors
   setupAccel(LSM9DS0_ACCELRANGE_2G);
   setupMag(LSM9DS0_MAGGAIN_2GAUSS);
   setupGyro(LSM9DS0_GYROSCALE_245DPS);
@@ -151,17 +151,17 @@ void Adafruit_LSM9DS0::read()
 void Adafruit_LSM9DS0::readAccel() {
   // Read the accelerometer
   byte buffer[6];
-  readBuffer(XMTYPE, 
-       0x80 | LSM9DS0_REGISTER_OUT_X_L_A, 
+  readBuffer(XMTYPE,
+       0x80 | LSM9DS0_REGISTER_OUT_X_L_A,
        6, buffer);
-  
+
   uint8_t xlo = buffer[0];
   int16_t xhi = buffer[1];
   uint8_t ylo = buffer[2];
   int16_t yhi = buffer[3];
   uint8_t zlo = buffer[4];
   int16_t zhi = buffer[5];
-  
+
   // Shift values to create properly formed integer (low byte first)
   xhi <<= 8; xhi |= xlo;
   yhi <<= 8; yhi |= ylo;
@@ -174,17 +174,17 @@ void Adafruit_LSM9DS0::readAccel() {
 void Adafruit_LSM9DS0::readMag() {
   // Read the magnetometer
   byte buffer[6];
-  readBuffer(XMTYPE, 
-       0x80 | LSM9DS0_REGISTER_OUT_X_L_M, 
+  readBuffer(XMTYPE,
+       0x80 | LSM9DS0_REGISTER_OUT_X_L_M,
        6, buffer);
-  
+
   uint8_t xlo = buffer[0];
   int16_t xhi = buffer[1];
   uint8_t ylo = buffer[2];
   int16_t yhi = buffer[3];
   uint8_t zlo = buffer[4];
   int16_t zhi = buffer[5];
-  
+
   // Shift values to create properly formed integer (low byte first)
   xhi <<= 8; xhi |= xlo;
   yhi <<= 8; yhi |= ylo;
@@ -197,22 +197,22 @@ void Adafruit_LSM9DS0::readMag() {
 void Adafruit_LSM9DS0::readGyro() {
   // Read gyro
   byte buffer[6];
-  readBuffer(GYROTYPE, 
-       0x80 | LSM9DS0_REGISTER_OUT_X_L_G, 
+  readBuffer(GYROTYPE,
+       0x80 | LSM9DS0_REGISTER_OUT_X_L_G,
        6, buffer);
-  
+
   uint8_t xlo = buffer[0];
   int16_t xhi = buffer[1];
   uint8_t ylo = buffer[2];
   int16_t yhi = buffer[3];
   uint8_t zlo = buffer[4];
   int16_t zhi = buffer[5];
-  
+
   // Shift values to create properly formed integer (low byte first)
   xhi <<= 8; xhi |= xlo;
   yhi <<= 8; yhi |= ylo;
   zhi <<= 8; zhi |= zlo;
-  
+
   gyroData.x = xhi;
   gyroData.y = yhi;
   gyroData.z = zhi;
@@ -221,14 +221,14 @@ void Adafruit_LSM9DS0::readGyro() {
 void Adafruit_LSM9DS0::readTemp() {
   // Read temp sensor
   byte buffer[2];
-  readBuffer(XMTYPE, 
-       0x80 | LSM9DS0_REGISTER_TEMP_OUT_L_XM, 
+  readBuffer(XMTYPE,
+       0x80 | LSM9DS0_REGISTER_TEMP_OUT_L_XM,
        2, buffer);
   uint8_t xlo = buffer[0];
   int16_t xhi = buffer[1];
 
   xhi <<= 8; xhi |= xlo;
-  
+
   // Shift values to create properly formed integer (low byte first)
   temperature = xhi;
 }
@@ -239,7 +239,7 @@ void Adafruit_LSM9DS0::setupAccel ( lsm9ds0AccelRange_t range )
   reg &= ~(0b00111000);
   reg |= range;
   write8(XMTYPE, LSM9DS0_REGISTER_CTRL_REG2_XM, reg );
-  
+
   switch (range)
   {
     case LSM9DS0_ACCELRANGE_2G:
@@ -253,7 +253,7 @@ void Adafruit_LSM9DS0::setupAccel ( lsm9ds0AccelRange_t range )
       break;
     case LSM9DS0_ACCELRANGE_8G:
       _accel_mg_lsb = LSM9DS0_ACCEL_MG_LSB_8G;
-      break;    
+      break;
     case LSM9DS0_ACCELRANGE_16G:
       _accel_mg_lsb =LSM9DS0_ACCEL_MG_LSB_16G;
       break;
@@ -328,7 +328,7 @@ bool Adafruit_LSM9DS0::getEvent(sensors_event_t *accelEvent,
   if (magEvent)   getMagEvent(magEvent, timestamp);
   if (gyroEvent)  getGyroEvent(gyroEvent, timestamp);
   if (tempEvent)  getTempEvent(tempEvent, timestamp);
-  
+
   return true;
 }
 
@@ -371,7 +371,7 @@ void Adafruit_LSM9DS0::write8(boolean type, byte reg, byte value)
     digitalWrite(_cs, LOW);
     // set address
     spixfer(reg | 0x40); // write multiple
-    spixfer(value); 
+    spixfer(value);
     digitalWrite(_cs, HIGH);
     SPI.endTransaction();
 
@@ -440,7 +440,7 @@ uint8_t Adafruit_LSM9DS0::spixfer(uint8_t data) {
       digitalWrite(_clk, LOW);
       digitalWrite(_mosi, data & (1<<i));
       digitalWrite(_clk, HIGH);
-      if (digitalRead(_miso)) 
+      if (digitalRead(_miso))
           reply |= 1;
     }
     return reply;
